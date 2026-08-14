@@ -72,8 +72,8 @@ footer { border-top:1px solid var(--line); margin-top:48px; padding:32px 24px;
   <div class="buy">
     <h1>Minimal Koi Fish Ink Art Print | Black White Japanese Wall Art Poster</h1>
     <p class="price" id="price">$39.99</p>
-    <span class="opt">Print only, unframed</span><div class="sizes"><label><span>12″ x 18″ (Vertical)</span><input type="radio" name="v" value="39.99" checked data-label="Print only, unframed — 12″ x 18″ (Vertical)" onchange="setp(this.value)"><span class="amt">$39.99</span></label><label><span>16″ x 24″ (Vertical)</span><input type="radio" name="v" value="54.99" data-label="Print only, unframed — 16″ x 24″ (Vertical)" onchange="setp(this.value)"><span class="amt">$54.99</span></label><label><span>24&quot; x 36&quot; (Vertical)</span><input type="radio" name="v" value="74.99" data-label="Print only, unframed — 24&quot; x 36&quot; (Vertical)" onchange="setp(this.value)"><span class="amt">$74.99</span></label></div><span class="opt">Framed, ready to hang</span><div class="sizes"><label><span>18&quot; x 24&quot;</span><input type="radio" name="v" value="144.99" data-label="Framed, ready to hang — 18&quot; x 24&quot;" onchange="setp(this.value)"><span class="amt">$144.99</span></label><label><span>19.7&quot; x 27.6&quot;</span><input type="radio" name="v" value="179.99" data-label="Framed, ready to hang — 19.7&quot; x 27.6&quot;" onchange="setp(this.value)"><span class="amt">$179.99</span></label><label><span>23.6&quot; x 31.5&quot;</span><input type="radio" name="v" value="219.99" data-label="Framed, ready to hang — 23.6&quot; x 31.5&quot;" onchange="setp(this.value)"><span class="amt">$219.99</span></label></div>
-    <a class="btn" href="https://www.etsy.com/listing/4527163261/minimal-koi-fish-ink-art-print-black" target="_blank" rel="noopener">Buy this print</a><p class="note">Checkout is handled on our Etsy shop while our own checkout is being set up.</p>
+    <span class="opt">Print only, unframed</span><div class="sizes"><label><span>12″ x 18″ (Vertical)</span><input type="radio" name="v" value="39.99" checked data-url="https://buy.stripe.com/bJe8wP34X2Ac9aMdb16Jb0v" onchange="setp(this)"><span class="amt">$39.99</span></label><label><span>16″ x 24″ (Vertical)</span><input type="radio" name="v" value="54.99" data-url="https://buy.stripe.com/cNi5kDcFx0s42Mob2T6Jb0w" onchange="setp(this)"><span class="amt">$54.99</span></label><label><span>24&quot; x 36&quot; (Vertical)</span><input type="radio" name="v" value="74.99" data-url="https://buy.stripe.com/fZu7sL0WPa2E86I9YP6Jb0x" onchange="setp(this)"><span class="amt">$74.99</span></label></div><span class="opt">Framed, ready to hang</span><div class="sizes"><label><span>18&quot; x 24&quot;</span><input type="radio" name="v" value="144.99" data-url="https://buy.stripe.com/00w5kD5d5fmYgDe2wn6Jb0y" onchange="setp(this)"><span class="amt">$144.99</span></label><label><span>19.7&quot; x 27.6&quot;</span><input type="radio" name="v" value="179.99" data-url="https://buy.stripe.com/cNi3cvfRJ5Mo72E5Iz6Jb0z" onchange="setp(this)"><span class="amt">$179.99</span></label><label><span>23.6&quot; x 31.5&quot;</span><input type="radio" name="v" value="219.99" data-url="https://buy.stripe.com/aFaaEX7ld8YA9aMc6X6Jb0A" onchange="setp(this)"><span class="amt">$219.99</span></label></div>
+    <button class="btn" id="buy" onclick="buy()">Buy this print</button><p class="note">Secure checkout by Stripe — card, Apple Pay or Link. Printed and shipped by our print partner, 5-8 days.<br>Your card statement will show AUTOMATE AI · MINICANVASART.</p>
     <div class="desc">Minimal — a koi fish ink art print in serene black &amp; white ink. Museum-quality matte poster that brings calm, minimalist beauty to any wall. Printed and shipped for you; available framed or unframed in multiple sizes.
 
 🖌 Meet the artist
@@ -85,9 +85,16 @@ I&#x27;m Hana — an artist who fell in love with the quiet power of Japanese in
 <script>
 function pick(el,u){document.getElementById('main').src=u;
   document.querySelectorAll('.thumbs img').forEach(i=>i.setAttribute('aria-current',i===el));}
-function setp(v){document.getElementById('price').textContent='$'+Number(v).toFixed(2);}
-function buy(id){const v=document.querySelector('input[name=v]:checked');
-  location.href='?listing='+id+'&variant='+encodeURIComponent(v.parentNode.textContent.trim());}
+function sel(){return document.querySelector('input[name=v]:checked');}
+function setp(el){
+  document.getElementById('price').textContent='$'+Number(el.value).toFixed(2);
+  const b=document.getElementById('buy');
+  // размер без ссылки оплаты продавать нельзя: молча увести человека в никуда хуже,
+  // чем честно показать, что этот вариант сейчас недоступен
+  if(b){ b.disabled=!el.dataset.url; b.textContent=el.dataset.url?'Buy this print':'Not available'; }
+}
+function buy(){const v=sel(); if(v&&v.dataset.url) location.href=v.dataset.url;}
+document.addEventListener('DOMContentLoaded',()=>{const v=sel(); if(v) setp(v);});
 </script>
 <footer>Ink art by Hana &middot; MiniCanvasArt</footer>
 </body>

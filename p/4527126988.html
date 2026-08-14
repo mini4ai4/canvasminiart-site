@@ -72,8 +72,8 @@ footer { border-top:1px solid var(--line); margin-top:48px; padding:32px 24px;
   <div class="buy">
     <h1>Framed Japanese Wall Art | Crane Taking Off From Sumi-e Ink Print | Black and White Zen Decor | A1 Ready Poster Print</h1>
     <p class="price" id="price">$144.99</p>
-    <span class="opt">Framed, ready to hang</span><div class="sizes"><label><span>18&quot; x 24&quot;</span><input type="radio" name="v" value="144.99" checked data-label="Framed, ready to hang — 18&quot; x 24&quot;" onchange="setp(this.value)"><span class="amt">$144.99</span></label><label><span>19.7&quot; x 27.6&quot;</span><input type="radio" name="v" value="179.99" data-label="Framed, ready to hang — 19.7&quot; x 27.6&quot;" onchange="setp(this.value)"><span class="amt">$179.99</span></label><label><span>23.6&quot; x 31.5&quot;</span><input type="radio" name="v" value="219.99" data-label="Framed, ready to hang — 23.6&quot; x 31.5&quot;" onchange="setp(this.value)"><span class="amt">$219.99</span></label></div><span class="opt">Print only, unframed</span><div class="sizes"><label><span>12&quot; x 18&quot;</span><input type="radio" name="v" value="39.99" data-label="Print only, unframed — 12&quot; x 18&quot;" onchange="setp(this.value)"><span class="amt">$39.99</span></label><label><span>16&quot; x 24&quot;</span><input type="radio" name="v" value="54.99" data-label="Print only, unframed — 16&quot; x 24&quot;" onchange="setp(this.value)"><span class="amt">$54.99</span></label><label><span>24&quot; x 36&quot;</span><input type="radio" name="v" value="74.99" data-label="Print only, unframed — 24&quot; x 36&quot;" onchange="setp(this.value)"><span class="amt">$74.99</span></label></div>
-    <a class="btn" href="https://www.etsy.com/listing/4527126988/framed-japanese-wall-art-crane-taking" target="_blank" rel="noopener">Buy this print</a><p class="note">Checkout is handled on our Etsy shop while our own checkout is being set up.</p>
+    <span class="opt">Framed, ready to hang</span><div class="sizes"><label><span>18&quot; x 24&quot;</span><input type="radio" name="v" value="144.99" checked data-url="https://buy.stripe.com/6oU14nfRJgr29aMgnd6Jd04" onchange="setp(this)"><span class="amt">$144.99</span></label><label><span>19.7&quot; x 27.6&quot;</span><input type="radio" name="v" value="179.99" data-url="https://buy.stripe.com/fZu14naxpcaMcmY5Iz6Jd05" onchange="setp(this)"><span class="amt">$179.99</span></label><label><span>23.6&quot; x 31.5&quot;</span><input type="radio" name="v" value="219.99" data-url="https://buy.stripe.com/9B66oHdJB3EgbiUb2T6Jd06" onchange="setp(this)"><span class="amt">$219.99</span></label></div><span class="opt">Print only, unframed</span><div class="sizes"><label><span>12&quot; x 18&quot;</span><input type="radio" name="v" value="39.99" data-url="https://buy.stripe.com/7sY8wP34X6Qs9aMef56Jd07" onchange="setp(this)"><span class="amt">$39.99</span></label><label><span>16&quot; x 24&quot;</span><input type="radio" name="v" value="54.99" data-url="https://buy.stripe.com/cNi3cv4914Ikdr25Iz6Jd08" onchange="setp(this)"><span class="amt">$54.99</span></label><label><span>24&quot; x 36&quot;</span><input type="radio" name="v" value="74.99" data-url="https://buy.stripe.com/14A8wPgVN7UwcmY9YP6Jd09" onchange="setp(this)"><span class="amt">$74.99</span></label></div>
+    <button class="btn" id="buy" onclick="buy()">Buy this print</button><p class="note">Secure checkout by Stripe — card, Apple Pay or Link. Printed and shipped by our print partner, 5-8 days.<br>Your card statement will show AUTOMATE AI · MINICANVASART.</p>
     <div class="desc">Crane Taking Off From a Lake — an original black &amp; white sumi-e ink wall art print.
 
 Minimalist ink-wash (sumi-e) painting capturing crane lifting off water. The bold brushwork and calm negative space bring a serene, gallery-quality focal point to a living room, bedroom, office, or entryway.
@@ -93,9 +93,16 @@ I&#x27;m Hana — I find endless wonder in nature&#x27;s small details: a single
 <script>
 function pick(el,u){document.getElementById('main').src=u;
   document.querySelectorAll('.thumbs img').forEach(i=>i.setAttribute('aria-current',i===el));}
-function setp(v){document.getElementById('price').textContent='$'+Number(v).toFixed(2);}
-function buy(id){const v=document.querySelector('input[name=v]:checked');
-  location.href='?listing='+id+'&variant='+encodeURIComponent(v.parentNode.textContent.trim());}
+function sel(){return document.querySelector('input[name=v]:checked');}
+function setp(el){
+  document.getElementById('price').textContent='$'+Number(el.value).toFixed(2);
+  const b=document.getElementById('buy');
+  // размер без ссылки оплаты продавать нельзя: молча увести человека в никуда хуже,
+  // чем честно показать, что этот вариант сейчас недоступен
+  if(b){ b.disabled=!el.dataset.url; b.textContent=el.dataset.url?'Buy this print':'Not available'; }
+}
+function buy(){const v=sel(); if(v&&v.dataset.url) location.href=v.dataset.url;}
+document.addEventListener('DOMContentLoaded',()=>{const v=sel(); if(v) setp(v);});
 </script>
 <footer>Ink art by Hana &middot; MiniCanvasArt</footer>
 </body>

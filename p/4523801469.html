@@ -72,8 +72,8 @@ footer { border-top:1px solid var(--line); margin-top:48px; padding:32px 24px;
   <div class="buy">
     <h1>Japanese Wall Art | Japandi Old Monk Tea Sumi-e Ink Print | Black and White Zen Decor | Digital Download | Printable Wall Art</h1>
     <p class="price" id="price">$8.99</p>
-    <span class="opt">Format</span><div class="sizes"><label><span>Digital download</span><input type="radio" name="v" value="8.99" checked data-label="Format — Digital download" onchange="setp(this.value)"><span class="amt">$8.99</span></label></div>
-    <a class="btn" href="https://www.etsy.com/listing/4523801469/japanese-wall-art-japandi-old-monk-tea" target="_blank" rel="noopener">Buy this print</a><p class="note">Checkout is handled on our Etsy shop while our own checkout is being set up.</p>
+    <span class="opt">Format</span><div class="sizes"><label><span>Digital download</span><input type="radio" name="v" value="8.99" checked data-url="https://buy.stripe.com/3cI6oH8ph8YA4Uw7QH6Je40" onchange="setp(this)"><span class="amt">$8.99</span></label></div>
+    <button class="btn" id="buy" onclick="buy()">Buy this print</button><p class="note">Secure checkout by Stripe — card, Apple Pay or Link. We email your files right after payment.<br>Your card statement will show AUTOMATE AI · MINICANVASART.</p>
     <div class="desc">An elderly monk sips tea from a bowl in weathered black-and-white sumi-e ink, the bowl glowing vivid red — simple contentment. A warm piece for a kitchen, living room or tea corner.
 
 🤖 How this artwork is made
@@ -104,9 +104,16 @@ Thank you for supporting a small studio 🖤
 <script>
 function pick(el,u){document.getElementById('main').src=u;
   document.querySelectorAll('.thumbs img').forEach(i=>i.setAttribute('aria-current',i===el));}
-function setp(v){document.getElementById('price').textContent='$'+Number(v).toFixed(2);}
-function buy(id){const v=document.querySelector('input[name=v]:checked');
-  location.href='?listing='+id+'&variant='+encodeURIComponent(v.parentNode.textContent.trim());}
+function sel(){return document.querySelector('input[name=v]:checked');}
+function setp(el){
+  document.getElementById('price').textContent='$'+Number(el.value).toFixed(2);
+  const b=document.getElementById('buy');
+  // размер без ссылки оплаты продавать нельзя: молча увести человека в никуда хуже,
+  // чем честно показать, что этот вариант сейчас недоступен
+  if(b){ b.disabled=!el.dataset.url; b.textContent=el.dataset.url?'Buy this print':'Not available'; }
+}
+function buy(){const v=sel(); if(v&&v.dataset.url) location.href=v.dataset.url;}
+document.addEventListener('DOMContentLoaded',()=>{const v=sel(); if(v) setp(v);});
 </script>
 <footer>Ink art by Hana &middot; MiniCanvasArt</footer>
 </body>
